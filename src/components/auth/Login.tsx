@@ -2,10 +2,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
-import logo from '../assets/logo.png';
-import image1 from "../assets/images (1).png";
-import image2 from "../assets/images.jpeg";
-import image3 from "../assets/images.png";
+import logo from '../../assets/logo.png';
+import image1 from '../../assets/images (1).png';
+import image2 from '../../assets/images.jpeg';
+import image3 from '../../assets/images.png';
 
 function Login() {
   const [email, setEmail] = useState<string>('');

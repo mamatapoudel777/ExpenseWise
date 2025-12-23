@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./components/auth/Login";
 import DashboardLayout from "./components/admindashboard/DashboardLayout";
 import UsersList from "./components/admindashboard/UsersList";
 import ProtectedRoute from "./components/ProtectedRoute"; 
-import SignUp from "./components/Signup";
+import SignUp from "./components/auth/Signup";
 
 function App() {
   return (
