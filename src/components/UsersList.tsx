@@ -4,6 +4,7 @@ import { Trash2, Edit } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import DeleteUserModal from './DeleteUserModal';
+import EditUserModal from './EditModule';
 
 interface UserData {
   _id: string;
@@ -16,6 +17,8 @@ const UsersList: React.FC = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
 
   const fetchUsers = async () => {
     try {
