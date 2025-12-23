@@ -1,39 +1,73 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+
 import Login from "./components/auth/Login";
-import DashboardLayout from "./components/admindashboard/DashboardLayout";
+import SignUp from "./components/auth/Signup";
+import HomePage from "./components/publicpage/HomePage";
+import DashboardLayout from "./components/admindashboard/DashboardLayout"; 
+import UserDashboard from "./components/userdashboard/UserDashboardLayout"; 
 import UsersList from "./components/admindashboard/UsersList";
 import ProtectedRoute from "./components/ProtectedRoute"; 
-import SignUp from "./components/auth/Signup";
 
 function App() {
+  // Store logged-in user info
+  const [user, setUser] = useState<{ email: string; role: "admin" | "user" } | null>(null);
+
+  // Dummy login check (you can replace with API call)
+  const handleLogin = (email: string, password: string) => {
+    if (email === "admin@123" && password === "admin123@") {
+      setUser({ email, role: "admin" });
+      return "admin";
+    } else {
+      // assume any other valid login is a normal user
+      setUser({ email, role: "user" });
+      return "user";
+    }
+  };
+
   return (
     <Router>
       <Routes>
+        {/* Public Homepage */}
+        <Route path="/" element={<HomePage />} />
 
-        <Route path="/" element={<Navigate to="/signin" />} />
-
-        <Route path="/signin" element={<Login />} />
-
+        {/* Login and Signup */}
+        <Route 
+          path="/signin" 
+          element={<Login onLogin={handleLogin} />} 
+        />
         <Route path="/signup" element={<SignUp />} />
 
-        <Route 
-          path="/dashboard" 
+        {/* Admin Dashboard */}
+        <Route
+          path="/admin/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute user={user} requiredRole="admin">
               <DashboardLayout />
             </ProtectedRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/users" 
+        <Route
+          path="/admin/users"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute user={user} requiredRole="admin">
               <UsersList />
             </ProtectedRoute>
-          } 
+          }
         />
 
+        {/* User Dashboard */}
+        <Route
+          path="/user/dashboard"
+          element={
+            <ProtectedRoute user={user} requiredRole="user">
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Catch-all redirect to homepage */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
