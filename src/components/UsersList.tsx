@@ -77,12 +77,12 @@ const UsersList: React.FC = () => {
                         {user.email}
                       </td>
                       <td className="p-4 flex justify-center space-x-3">
-                        <button className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all">
+                        <button className="text-blue-600 hover:bg-blue-50 p-2 cursor-pointer rounded-lg transition-all">
                           <Edit size={18} />
                         </button>
                         <button 
                           onClick={() => openDeleteModal(user)} 
-                          className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all"
+                          className="text-red-600 hover:bg-red-50 p-2 cursor-pointer rounded-lg transition-all"
                         >
                           <Trash2 size={18} />
                         </button>

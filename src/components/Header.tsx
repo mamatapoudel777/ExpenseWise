@@ -5,7 +5,6 @@ const Header: React.FC = () => {
   const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
-    // This looks at the browser memory for 'userName'
     const storedName = localStorage.getItem('userName');
     if (storedName) {
       setUserName(storedName);
