@@ -1,4 +1,3 @@
-// components/DashboardLayout.jsx
 import Sidebar from '../commoncomponents/Sidebar';
 import Header from '../commoncomponents/Header';
 import DashboardContent from './DashboardContent';
