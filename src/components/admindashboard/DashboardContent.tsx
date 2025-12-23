@@ -1,5 +1,5 @@
 import React from "react";
-import LineChart from "../components/Line";
+import LineChart from "./Line";
 import PieChart from "./Pie";
 import BarChart from "./Bar";
 import { DollarSign, TrendingUp, Users } from "lucide-react";

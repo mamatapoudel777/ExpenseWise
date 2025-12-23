@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LayoutDashboard,Users, Settings, LogOut, Bell, Search } from 'lucide-react';
-import LogoutModal from '../components/Logout'
+import LogoutModal from '../Logout'
 
 interface NavLinkProps {
   icon: React.ReactNode;
