@@ -35,20 +35,20 @@ const Sidebar: React.FC = () => {
     <>
       <aside className="w-64 bg-[#00694B] border-r border-gray-100 fixed top-0 left-0 h-full flex flex-col pt-4">
         <div className="px-4 mb-6 text-white text-xl font-bold">
-          App Name
+          ExpenseWise
         </div>
 
         <nav className="flex-1 px-4 space-y-4">
           <h3 className="text-xs font-semibold uppercase text-gray-300 px-2">Menu</h3>
           <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('/dashboard')} />
-          <NavLink icon={<Bell />} label="Apps" />
+          <NavLink icon={<Bell />} label="Alerts" />
 <NavLink
   icon={<Users />}
-  label="Users"
+  label="Users Managements"
   onClick={() => navigate('/users')}
 />
-          <NavLink icon={<Settings />} label="Layout" />
-          <NavLink icon={<Search />} label='Charts' />
+          <NavLink icon={<Settings />} label="Transactions Overview" />
+          <NavLink icon={<Search />} label='Analytics' />
           
           <NavLink 
             icon={<LogOut />} 
