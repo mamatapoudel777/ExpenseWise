@@ -50,6 +50,34 @@ const UsersList: React.FC = () => {
       }
     }
   };
+   const openEditModal = (user: UserData) => {
+    setSelectedUser(user);
+    setIsEditOpen(true);
+  };
+
+  const saveEdit = async (updatedData: {
+    firstname: string;
+    lastname: string;
+    email: string;
+  }) => {
+    if (!selectedUser) return;
+
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/users/${selectedUser._id}`,
+        updatedData
+      );
+
+      setUsers(users.map(user =>
+        user._id === selectedUser._id ? res.data : user
+      ));
+
+      setIsEditOpen(false);
+      setSelectedUser(null);
+    } catch (error) {
+      alert('Failed to update user');
+    }
+  };
 
   return (
     <div className="flex h-screen bg-[#F7F8FC]">
@@ -80,9 +108,13 @@ const UsersList: React.FC = () => {
                         {user.email}
                       </td>
                       <td className="p-4 flex justify-center space-x-3">
-                        <button className="text-blue-600 hover:bg-blue-50 p-2 cursor-pointer rounded-lg transition-all">
-                          <Edit size={18} />
+                        <button
+                            onClick={() => openEditModal(user)}
+                            className="text-blue-600 hover:bg-blue-50 p-2 cursor-pointer rounded-lg transition-all"
+                            >
+                         <Edit size={18} />
                         </button>
+
                         <button 
                           onClick={() => openDeleteModal(user)} 
                           className="text-red-600 hover:bg-red-50 p-2 cursor-pointer rounded-lg transition-all"
@@ -104,6 +136,13 @@ const UsersList: React.FC = () => {
           userName={`${selectedUser.firstname} ${selectedUser.lastname}`}
           onConfirm={confirmDelete}
           onCancel={() => setIsModalOpen(false)}
+        />
+      )}
+      {isEditOpen && selectedUser && (
+        <EditUserModal
+          user={selectedUser}
+          onSave={saveEdit}
+          onCancel={() => setIsEditOpen(false)}
         />
       )}
     </div>
