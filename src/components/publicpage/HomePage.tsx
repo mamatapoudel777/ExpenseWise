@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
             Take Control of <br /> Your Finances
           </h1>
           <p className="text-xl opacity-90 max-w-lg">
-            Track your expenses, manage budgets, and grow your savings effortlessly with our intelligent dashboard.
+            Track your expenses, manage budgets and income, and grow your savings effortlessly with our intelligent dashboard.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link to="/signin">
