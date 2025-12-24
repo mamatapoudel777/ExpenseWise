@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
 <div className="hidden md:flex items-center space-x-4">
   
   <Link to="/signin">
-    <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold rounded-lg border-[2px] border-green-700 hover:bg-[#009e6d] hover:text-white">
+    <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold rounded-lg border-[2px] border-gray-200 hover:bg-[#009e6d] hover:text-white">
       Login
     </button>
   </Link>

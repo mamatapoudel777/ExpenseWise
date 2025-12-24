@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-white hover:text-[#00694B] transition-colors"
+                      className="text-white  transition-colors"
                     >
                       {link}
                     </a>
@@ -75,13 +75,13 @@ const Footer: React.FC = () => {
           <p>© {new Date().getFullYear()} ExpenseWise. All rights reserved.</p>
 
           <div className="flex gap-6">
-            <a href="#" className="hover:text-[#00694B] transition">
+            <a href="#" className="">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-[#00694B] transition">
+            <a href="#" className="">
               Terms of Service
             </a>
-            <a href="#" className="hover:text-[#00694B] transition">
+            <a href="#" className="">
               Cookie Policy
             </a>
           </div>
