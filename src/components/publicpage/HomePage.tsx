@@ -1,7 +1,11 @@
 import React from 'react';
+import Navbar from './Navbar';
 
 const HomePage: React.FC = () => {
   return (
+    <>
+    <Navbar/>
+    
     <section className="pt-32 pb-20 bg-gradient-to-br from-[#00694B] to-[#00B37E] text-white">
       <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
@@ -54,6 +58,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
