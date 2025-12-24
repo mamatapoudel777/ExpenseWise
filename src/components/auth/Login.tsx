@@ -2,7 +2,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
-import logo from '../../assets/logo.png';
 import image1 from '../../assets/images (1).png';
 import image2 from '../../assets/images.jpeg';
 import image3 from '../../assets/images.png';
@@ -43,7 +42,10 @@ function Login() {
   return (
     <div className="flex items-center p-2 justify-center min-h-screen bg-gray-300">
       <div className="bg-white shadow-2xl border border-gray-300 rounded-4xl w-full max-w-sm">
-        <img src={logo} className="w-60 h-auto mx-auto" alt="Logo" />
+        <a href="#" className="flex items-center p-4 w-60 h-auto mx-auto">
+            <div className="text-2xl font-bold">💰 Expense <span className='text-[#00B37E] text-3xl'>Wise</span></div>
+        </a>
+
         <form onSubmit={handleLogin} className="bg-[#00694B] p-8 rounded-4xl shadow-lg w-full mt-4">
           <h1 className="text-3xl font-bold text-white mb-2 text-center">Log In</h1>
           

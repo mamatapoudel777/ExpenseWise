@@ -12,7 +12,6 @@ const Navbar: React.FC = () => {
         </a>
 
         {/* Action Buttons */}
-        {/* Action Buttons */}
 <div className="hidden md:flex items-center space-x-4">
   
   <Link to="/signin">
