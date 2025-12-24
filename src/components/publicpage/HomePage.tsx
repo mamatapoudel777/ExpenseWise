@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import BarChart from '../admindashboard/Bar';
+import Features from './Features'
 
 const HomePage: React.FC = () => {
   return (
@@ -55,6 +56,8 @@ const HomePage: React.FC = () => {
         </div>
       </div>
     </section>
+    <Features/>
+
     </>
   );
 };

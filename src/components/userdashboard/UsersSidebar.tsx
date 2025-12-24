@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard,Users, Settings, LogOut, Bell, Search } from 'lucide-react';
+import { LayoutDashboard,Users, FileText, LogOut, List, PlusCircle } from 'lucide-react';
 import LogoutModal from '../auth/Logout'
 
 interface NavLinkProps {
@@ -35,20 +35,21 @@ const UsersSidebar: React.FC = () => {
     <>
       <aside className="w-64 bg-[#00694B] border-r border-gray-100 fixed top-0 left-0 h-full flex flex-col pt-4">
         <div className="px-4 mb-6 text-white text-xl font-bold">
-          ExpenseWise
+          💰 ExpenseWise
         </div>
 
         <nav className="flex-1 px-4 space-y-4">
           <h3 className="text-xs font-semibold uppercase text-gray-300 px-2">Menu</h3>
           <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('#')} />
-          <NavLink icon={<Bell />} label="Transactions" />
+          <NavLink icon={<List />} label="Transactions" />
+          <NavLink icon={<PlusCircle />} label='Add Transaction' />
+
 <NavLink
   icon={<Users />}
   label="Profile Managements"
   onClick={() => navigate('#')}
 />
-          <NavLink icon={<Settings />} label="Export Report" />
-          <NavLink icon={<Search />} label='Net Balance' />
+          <NavLink icon={<FileText />} label="Export Report" />
           
           <NavLink 
             icon={<LogOut />} 

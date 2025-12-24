@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
     <>
       <aside className="w-64 bg-[#00694B] border-r border-gray-100 fixed top-0 left-0 h-full flex flex-col pt-4">
         <div className="px-4 mb-6 text-white text-xl font-bold">
-          ExpenseWise
+          💰 ExpenseWise
         </div>
 
         <nav className="flex-1 px-4 space-y-4">
