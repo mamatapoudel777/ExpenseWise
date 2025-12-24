@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,10 +12,23 @@ const Navbar: React.FC = () => {
         </a>
 
         {/* Action Buttons */}
-        <div className="hidden md:flex items-center space-x-4">
-          <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold hover:bg-gray-50 rounded-lg">Login</button>
-          <button className="px-6 py-2 cursor-pointer bg-[#00B37E] text-white font-semibold rounded-lg hover:bg-[#009e6d] shadow-md transition-all">Sign Up</button>
-        </div>
+        {/* Action Buttons */}
+<div className="hidden md:flex items-center space-x-4">
+  
+  <Link to="/signin">
+    <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold rounded-lg border-[2px] border-green-700 hover:bg-[#009e6d] hover:text-white">
+      Login
+    </button>
+  </Link>
+
+  <Link to="/signup">
+    <button className="px-6 py-2 cursor-pointer bg-[#00B37E] text-white font-semibold rounded-lg hover:bg-[#009e6d] shadow-md transition-all">
+      Sign Up
+    </button>
+  </Link>
+
+</div>
+
 
         {/* Mobile Toggle */}
         <button className="md:hidden text-2xl" onClick={() => setIsOpen(!isOpen)}>
