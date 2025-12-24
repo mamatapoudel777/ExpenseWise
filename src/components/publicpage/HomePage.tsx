@@ -2,7 +2,8 @@ import React from 'react';
 import Navbar from './Navbar';
 import BarChart from '../admindashboard/Bar';
 import Features from './Features'
-
+import Footer from './Footer'
+import Testimonials from './Testimonials';
 const HomePage: React.FC = () => {
   return (
     <>
@@ -57,7 +58,8 @@ const HomePage: React.FC = () => {
       </div>
     </section>
     <Features/>
-
+    <Testimonials/>
+    <Footer/>
     </>
   );
 };
