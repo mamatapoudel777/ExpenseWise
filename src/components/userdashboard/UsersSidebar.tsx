@@ -22,7 +22,7 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, isActive, onClick }) => 
   </button>
 );
 
-const Sidebar: React.FC = () => {
+const UsersSidebar: React.FC = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -40,15 +40,15 @@ const Sidebar: React.FC = () => {
 
         <nav className="flex-1 px-4 space-y-4">
           <h3 className="text-xs font-semibold uppercase text-gray-300 px-2">Menu</h3>
-          <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('/dashboard')} />
-          <NavLink icon={<Bell />} label="Alerts" />
+          <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('#')} />
+          <NavLink icon={<Bell />} label="Transactions" />
 <NavLink
   icon={<Users />}
-  label="Users Managements"
-  onClick={() => navigate('/users')}
+  label="Profile Managements"
+  onClick={() => navigate('#')}
 />
-          <NavLink icon={<Settings />} label="Transactions Overview" />
-          <NavLink icon={<Search />} label='Analytics' />
+          <NavLink icon={<Settings />} label="Export Report" />
+          <NavLink icon={<Search />} label='Net Balance' />
           
           <NavLink 
             icon={<LogOut />} 
@@ -68,4 +68,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar;
+export default UsersSidebar;

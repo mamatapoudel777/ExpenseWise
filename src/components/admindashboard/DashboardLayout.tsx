@@ -1,4 +1,4 @@
-import Sidebar from '../commoncomponents/Sidebar';
+import Sidebar from './AdminSidebar';
 import Header from '../commoncomponents/Header';
 import DashboardContent from './DashboardContent';
 

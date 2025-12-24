@@ -15,7 +15,7 @@ function App() {
 
   // Dummy login check (you can replace with API call)
   const handleLogin = (email: string, password: string) => {
-    if (email === "admin@123" && password === "admin123@") {
+    if (email === "admin123@gmail.com" && password === "admin123@") {
       setUser({ email, role: "admin" });
       return "admin";
     } else {

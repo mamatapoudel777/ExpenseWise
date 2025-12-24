@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Trash2, Edit } from 'lucide-react';
-import Sidebar from '../commoncomponents/Sidebar';
+import Sidebar from './AdminSidebar';
 import Header from '../commoncomponents/Header';
 import DeleteUserModal from './DeleteUserModal';
 import EditUserModal from './EditModule';

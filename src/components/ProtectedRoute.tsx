@@ -1,18 +1,22 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  requiredRole?: "admin" | "user";
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const isAuthenticated = localStorage.getItem('userName');
+const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
+  const userName = localStorage.getItem("userName");
+  const role = localStorage.getItem("role");
 
-  if (!isAuthenticated) {
+  if (!userName) {
     return <Navigate to="/signin" replace />;
   }
 
-  
+  if (requiredRole && role !== requiredRole) {
+    return <Navigate to="/" replace />;
+  }
+
   return <>{children}</>;
 };
 
