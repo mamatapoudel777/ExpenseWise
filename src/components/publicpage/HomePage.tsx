@@ -4,6 +4,8 @@ import BarChart from '../admindashboard/Bar';
 import Features from './Features'
 import Footer from './Footer'
 import Testimonials from './Testimonials';
+import { Link } from "react-router-dom";
+
 const HomePage: React.FC = () => {
   return (
     <>
@@ -19,9 +21,11 @@ const HomePage: React.FC = () => {
             Track your expenses, manage budgets, and grow your savings effortlessly with our intelligent dashboard.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-4 bg-white text-[#00694B] font-bold rounded-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+            <Link to="/signin">
+            <button className="px-8 py-4 cursor-pointer bg-white text-[#00694B] font-bold rounded-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
               Get Started Free
             </button>
+           </Link>
             <button className="px-8 py-4 border-2 border-white/50 text-white font-bold rounded-xl hover:bg-white/10 transition-all">
               Watch Demo
             </button>

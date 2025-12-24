@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
 
         <nav className="flex-1 px-4 space-y-4">
           <h3 className="text-xs font-semibold uppercase text-gray-300 px-2">Menu</h3>
-          <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('/dashboard')} />
+          <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('/admin/dashboard')} />
           <NavLink icon={<Bell />} label="Alerts" />
 <NavLink
   icon={<Users />}
