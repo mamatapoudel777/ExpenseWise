@@ -4,6 +4,7 @@ import BarChart from '../admindashboard/Bar';
 import Features from './Features'
 import Footer from './Footer'
 import Testimonials from './Testimonials';
+import CTASection from './JoinUs';
 import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
@@ -62,6 +63,7 @@ const HomePage: React.FC = () => {
       </div>
     </section>
     <Features/>
+    <CTASection/>
     <Testimonials/>
     <Footer/>
     </>
