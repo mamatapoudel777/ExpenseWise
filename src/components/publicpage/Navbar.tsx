@@ -14,6 +14,33 @@ const Navbar: React.FC = () => {
         {/* Action Buttons */}
 <div className="hidden md:flex items-center space-x-4">
   
+  <Link to="/aboutus">
+    <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold ">
+      About us
+    </button>
+  </Link>
+
+  <Link to="/carrer">
+    <button className="px-6 py-2 cursor-pointer  text-[#00694B] font-semibold ">
+      Carrer
+    </button>
+  </Link>
+  <Link to="/blog">
+    <button className="px-6 py-2 cursor-pointer  text-[#00694B] font-semibold ">
+      Blog
+    </button>
+  </Link>
+
+  <Link to="/signup">
+    <button className="px-6 py-2 cursor-pointer  text-[#00694B] font-semibold ">
+      Contact Us
+    </button>
+  </Link>
+  <Link to="/pricing">
+    <button className="px-6 py-2 cursor-pointer  text-[#00694B] font-semibold ">
+      Pricing
+    </button>
+  </Link>
   <Link to="/signin">
     <button className="px-6 py-2 cursor-pointer text-[#00694B] font-semibold rounded-lg border-[2px] border-gray-200 hover:bg-[#009e6d] hover:text-white">
       Login

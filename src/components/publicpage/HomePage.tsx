@@ -21,16 +21,20 @@ const HomePage: React.FC = () => {
           <p className="text-xl opacity-90 max-w-lg">
             Track your expenses, manage budgets and income, and grow your savings effortlessly with our intelligent dashboard.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/signin">
-            <button className="px-8 py-4 cursor-pointer bg-white text-[#00694B] font-bold rounded-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
-              Get Started Free
-            </button>
-           </Link>
-            <button className="px-8 py-4 border-2 border-white/50 text-white font-bold rounded-xl hover:bg-white/10 transition-all">
-              Watch Demo
-            </button>
-          </div>
+          <div className="flex flex-wrap items-center gap-3 bg-white p-2 rounded-full shadow-md max-w-xl">
+  <input
+    type="text"
+    placeholder="Enter your email or phone number"
+    className="flex-1 px-5 py-3 text-gray-900 outline-none bg-transparent rounded-full"
+  />
+
+  <Link to="/signin">
+    <button className="px-6 py-3 cursor-pointer bg-gradient-to-br from-[#00694B] to-[#00B37E] text-white font-semibold rounded-full hover:bg-[#009f76] transition-all">
+      Get Started Free
+    </button>
+  </Link>
+</div>
+
         </div>
 
         {/* Dashboard Preview Widget */}
