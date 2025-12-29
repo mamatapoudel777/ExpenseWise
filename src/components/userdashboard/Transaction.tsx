@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from 'lucide-react';
 import UsersSidebar from './UsersSidebar';
+import Header from '../commoncomponents/Header';
+
 interface Expense {
   id: number;
   description: string;
@@ -77,9 +79,10 @@ export default function ExpenseDashboard() {
   return (
     <>
     <UsersSidebar/>
-   
+    <div className="ml-64 flex flex-col w-[calc(100%-16rem)] min-h-screen">
+    <Header/>
     <div className="min-h-screen bg-white">
-      <div className="max-w-5xl ml-65 p-6">
+      <div className="max-w-5xl p-6">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-700 mb-2">Transaction</h1>
           <p className="text-slate-400">Track and manage your expenses</p>
@@ -335,6 +338,7 @@ export default function ExpenseDashboard() {
           </div>
         )}
       </div>
+    </div>
     </div>
     </>
   );
