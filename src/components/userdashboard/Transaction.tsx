@@ -165,7 +165,7 @@ export default function ExpenseDashboard() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-white">{expense.description}</h3>
+                        <h3 className="text-lg font-semibold text-gray-700">{expense.description}</h3>
                         <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium">
                           {expense.category}
                         </span>
@@ -184,7 +184,7 @@ export default function ExpenseDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-white">Rs{parseFloat(expense.amount).toFixed(2)}</p>
+                      <p className="text-2xl font-bold text-gray-700">Rs{parseFloat(expense.amount).toFixed(2)}</p>
                     </div>
                   </div>
                   {expense.receiptUrl && (
