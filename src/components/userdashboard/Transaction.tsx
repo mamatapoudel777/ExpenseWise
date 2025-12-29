@@ -1,6 +1,6 @@
 import  { useState, ChangeEvent } from 'react';
-import { Plus, Upload, X, Calendar, DollarSign, FileText, Search, Filter } from 'lucide-react';
-
+import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from 'lucide-react';
+import UsersSidebar from './UsersSidebar';
 interface Expense {
   id: number;
   description: string;
@@ -74,22 +74,23 @@ export default function ExpenseDashboard() {
   const totalExpenses = expenses.reduce((sum, exp) => sum + parseFloat(exp.amount || '0'), 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <div className="max-w-7xl mx-auto p-6">
-        {/* Header */}
+    <>
+    <UsersSidebar/>
+   
+    <div className="min-h-screen bg-white">
+      <div className="max-w-5xl ml-65 p-6">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Expense Dashboard</h1>
+          <h1 className="text-4xl font-bold text-gray-700 mb-2">Transaction</h1>
           <p className="text-slate-400">Track and manage your expenses</p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 shadow-xl">
             <div className="flex items-center justify-between mb-2">
               <span className="text-emerald-100 text-sm font-medium">Total Expenses</span>
-              <DollarSign className="text-emerald-100" size={24} />
+              <IndianRupee className="text-emerald-100" size={24} />
             </div>
-            <p className="text-3xl font-bold text-white">${totalExpenses.toFixed(2)}</p>
+            <p className="text-3xl font-bold text-white">Rs {totalExpenses.toFixed(2)}</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-xl">
@@ -106,7 +107,7 @@ export default function ExpenseDashboard() {
               <Calendar className="text-purple-100" size={24} />
             </div>
             <p className="text-3xl font-bold text-white">
-              ${expenses
+              Rs {expenses
                 .filter(e => new Date(e.date).getMonth() === new Date().getMonth())
                 .reduce((sum, e) => sum + parseFloat(e.amount || '0'), 0)
                 .toFixed(2)}
@@ -130,7 +131,7 @@ export default function ExpenseDashboard() {
               <input
                 type="text"
                 placeholder="Search expenses..."
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
             <button className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:bg-slate-700 transition-colors">
@@ -140,14 +141,14 @@ export default function ExpenseDashboard() {
         </div>
 
         {/* Expenses List */}
-        <div className="bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-xl overflow-hidden">
           {expenses.length === 0 ? (
             <div className="text-center py-16 px-6">
-              <div className="w-24 h-24 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="text-slate-500" size={40} />
+              <div className="w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="text-white" size={40} />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">No expenses yet</h3>
-              <p className="text-slate-400 mb-6">Start tracking by adding your first expense</p>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">No expenses yet</h3>
+              <p className="text-slate-500 mb-6">Start tracking by adding your first expense</p>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all"
@@ -182,7 +183,7 @@ export default function ExpenseDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-white">${parseFloat(expense.amount).toFixed(2)}</p>
+                      <p className="text-2xl font-bold text-white">Rs{parseFloat(expense.amount).toFixed(2)}</p>
                     </div>
                   </div>
                   {expense.receiptUrl && (
@@ -203,7 +204,7 @@ export default function ExpenseDashboard() {
         {/* Add Expense Modal */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
                 <h2 className="text-2xl font-bold text-white">Add New Expense</h2>
                 <button
@@ -237,7 +238,7 @@ export default function ExpenseDashboard() {
                     Amount
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+                    <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
                     <input
                       type="number"
                       name="amount"
@@ -334,5 +335,6 @@ export default function ExpenseDashboard() {
         )}
       </div>
     </div>
+    </>
   );
 }
