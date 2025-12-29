@@ -1,4 +1,5 @@
-import  { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from 'lucide-react';
 import UsersSidebar from './UsersSidebar';
 interface Expense {
@@ -171,7 +172,7 @@ export default function ExpenseDashboard() {
                       </div>
                       <div className="flex items-center gap-4 text-sm text-slate-400">
                         <span className="flex items-center gap-1">
-                          <Calendar size={16} />
+                          <Calendar size={16} className="text-white"/>
                           {new Date(expense.date).toLocaleDateString()}
                         </span>
                         {expense.receiptUrl && (
