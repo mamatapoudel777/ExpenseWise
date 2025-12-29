@@ -70,7 +70,7 @@ export default function ExpenseDashboard() {
       date: new Date().toISOString().split('T')[0],
       receipt: null
     });
-    setReceiptPreview(null);
+    setReceiptPreview(nullll);
     //okay done
     setShowAddModal(false);
   };
