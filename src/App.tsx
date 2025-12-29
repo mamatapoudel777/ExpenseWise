@@ -6,6 +6,7 @@ import SignUp from "./components/auth/Signup";
 import HomePage from "./components/publicpage/HomePage";
 import DashboardLayout from "./components/admindashboard/DashboardLayout"; 
 import UserDashboard from "./components/userdashboard/UserDashboardLayout"; 
+import ExpenseDashboard from './components/userdashboard/Transaction'
 import UsersList from "./components/admindashboard/UsersList";
 import ProtectedRoute from "./components/ProtectedRoute"; 
 
@@ -62,6 +63,14 @@ function App() {
           element={
             <ProtectedRoute user={user} requiredRole="user">
               <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/transaction"
+          element={
+            <ProtectedRoute user={user} requiredRole="user">
+              <ExpenseDashboard />
             </ProtectedRoute>
           }
         />
