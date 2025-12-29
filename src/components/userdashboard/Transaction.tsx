@@ -71,6 +71,7 @@ export default function ExpenseDashboard() {
       receipt: null
     });
     setReceiptPreview(null);
+    //okay done
     setShowAddModal(false);
   };
 
@@ -126,7 +127,7 @@ export default function ExpenseDashboard() {
             className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
           >
             <Plus size={20} />
-            Add Expense
+            Add Expensev
           </button>
           
           <div className="flex-1 flex gap-3">
@@ -173,9 +174,9 @@ export default function ExpenseDashboard() {
                           {expense.category}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-slate-400">
-                        <span className="flex items-center gap-1">
-                          <Calendar size={16} className="text-white"/>
+                      <div className="flex items-center gap-4 text-sm text-white">
+                        <span className="flex items-center gap-1 text-white">
+                         
                           {new Date(expense.date).toLocaleDateString()}
                         </span>
                         {expense.receiptUrl && (
