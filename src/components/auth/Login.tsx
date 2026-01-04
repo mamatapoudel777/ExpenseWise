@@ -30,7 +30,7 @@ function Login() {
     setLoading(true);
 
     try {
-      /* 🔐 HARD-CODED ADMIN LOGIN */
+      /*  HARD-CODED ADMIN LOGIN */
       if (email === "admin123@gmail.com" && password === "admin123@") {
         localStorage.setItem("userName", "Admin");
         localStorage.setItem("role", "admin");
@@ -45,7 +45,7 @@ function Login() {
         return;
       }
 
-      /* 👤 NORMAL USER LOGIN */
+      /*  NORMAL USER LOGIN */
       const response = await axios.post("http://localhost:5000/login", {
         email,
         password,

@@ -4,7 +4,7 @@ import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from
 import UsersSidebar from './UsersSidebar';
 import Header from '../commoncomponents/Header';
 import axios from 'axios';
-import { nanoid } from 'nanoid'; // For unique frontend IDs
+import { nanoid } from 'nanoid'; 
 
 interface Expense {
   id: string;
