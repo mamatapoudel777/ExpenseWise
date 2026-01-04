@@ -46,7 +46,11 @@ const UsersSidebar: React.FC = () => {
             label="Transaction"
             onClick={() => navigate('/user/transaction')}
           />
-          <NavLink icon={<PlusCircle />} label='Add Transaction' />
+          <NavLink
+            icon={<PlusCircle />}
+            label="Add Transaction"
+            onClick={() => navigate('/user/addtransaction')}
+          />
 
 <NavLink
   icon={<Users />}

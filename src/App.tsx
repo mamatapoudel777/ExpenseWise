@@ -7,6 +7,7 @@ import HomePage from "./components/publicpage/HomePage";
 import DashboardLayout from "./components/admindashboard/DashboardLayout"; 
 import UserDashboard from "./components/userdashboard/UserDashboardLayout"; 
 import ExpenseDashboard from './components/userdashboard/Transaction'
+import AddExpenseDashboard from "./components/userdashboard/AddTransaction";
 import UsersList from "./components/admindashboard/UsersList";
 import ProtectedRoute from "./components/ProtectedRoute"; 
 
@@ -71,6 +72,14 @@ function App() {
           element={
             <ProtectedRoute user={user} requiredRole="user">
               <ExpenseDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/addtransaction"
+          element={
+            <ProtectedRoute user={user} requiredRole="user">
+              <AddExpenseDashboard />
             </ProtectedRoute>
           }
         />
