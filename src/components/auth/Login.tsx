@@ -16,7 +16,6 @@ function Login() {
 
   const navigate = useNavigate();
 
-  /* 🔁 Load remembered email */
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
     if (rememberedEmail) {
@@ -53,6 +52,7 @@ function Login() {
       });
 
       if (response.data.success) {
+        localStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("userName", response.data.user.firstname);
         localStorage.setItem("role", "user");
 
