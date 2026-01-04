@@ -104,7 +104,6 @@ export default function ExpenseDashboard() {
         };
         setExpenses(prev => [newExpense, ...prev]);
 
-        // Reset form
         setFormData({
           description: '',
           amount: '',
