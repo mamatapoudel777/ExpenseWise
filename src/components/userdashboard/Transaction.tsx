@@ -1,4 +1,5 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { ChangeEvent } from 'react';
 import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from 'lucide-react';
 import UsersSidebar from './UsersSidebar';
 import Header from '../commoncomponents/Header';
@@ -24,7 +25,7 @@ interface FormData {
 
 export default function ExpenseDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     description: '',
