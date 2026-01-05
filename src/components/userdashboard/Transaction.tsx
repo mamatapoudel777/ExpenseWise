@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
-import { Plus, Upload, X, Calendar, IndianRupee, FileText, Search, Filter } from 'lucide-react';
+import { Upload, Calendar, IndianRupee, FileText } from 'lucide-react';
 import UsersSidebar from './UsersSidebar';
 import Header from '../commoncomponents/Header';
 import axios from 'axios';
@@ -26,7 +26,6 @@ interface FormData {
 export default function ExpenseDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [_loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     description: '',
     amount: '',
@@ -37,7 +36,6 @@ export default function ExpenseDashboard() {
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   const userId = localStorage.getItem("userId");
-  const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Healthcare', 'Other'];
 
   // --- Fetch expenses from backend ---
   useEffect(() => {
@@ -112,7 +110,6 @@ export default function ExpenseDashboard() {
           receipt: null
         });
         setReceiptPreview(null);
-        setShowAddModal(false);
       }
     } catch (error) {
       console.error("Error adding expense:", error);
@@ -167,49 +164,13 @@ export default function ExpenseDashboard() {
               </div>
             </div>
 
-            {/* Action Bar */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <button
-                onClick={() => setShowAddModal(true)}
-                className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                className="flex items-center justify-center w-full gap-2 bg-gray-800 text-white px-6 py-3 rounded-xl font-semibold "
               >
-                <Plus size={20} />
-                Add Expense
+                Added Transaction list
               </button>
-
-              <div className="flex-1 flex gap-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
-                  <input
-                    type="text"
-                    placeholder="Search expenses..."
-                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-                <button className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:bg-slate-700 transition-colors">
-                  <Filter size={20} />
-                </button>
-              </div>
             </div>
-
-            {/* Expenses List */}
-            <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-xl overflow-hidden">
-              {expenses.length === 0 ? (
-                <div className="text-center py-16 px-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FileText className="text-white" size={40} />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No expenses yet</h3>
-                  <p className="text-slate-500 mb-6">Start tracking by adding your first expense</p>
-                  <button
-                    onClick={() => setShowAddModal(true)}
-                    className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all"
-                  >
-                    <Plus size={20} />
-                    Add Your First Expense
-                  </button>
-                </div>
-              ) : (
                 <div className="divide-y divide-slate-700">
                   {expenses.map((expense) => (
                     <div key={expense.id} className="p-6 hover:bg-slate-750 transition-colors">
@@ -249,134 +210,9 @@ export default function ExpenseDashboard() {
                     </div>
                   ))}
                 </div>
-              )}
             </div>
-
-            {/* Add Expense Modal */}
-            {showAddModal && (
-              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-                  <div className="p-6 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
-                    <h2 className="text-2xl font-bold text-white">Add New Expense</h2>
-                    <button
-                      onClick={() => { setShowAddModal(false); setReceiptPreview(null); }}
-                      className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
-                    >
-                      <X className="text-slate-400" size={24} />
-                    </button>
-                  </div>
-
-                  <div className="p-6 space-y-5">
-                    {/* Form fields */}
-                    {/* Description */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
-                      <input
-                        type="text"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        placeholder="e.g., Grocery shopping"
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      />
-                    </div>
-
-                    {/* Amount */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Amount</label>
-                      <div className="relative">
-                        <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
-                        <input
-                          type="number"
-                          name="amount"
-                          value={formData.amount}
-                          onChange={handleInputChange}
-                          step="0.01"
-                          placeholder="0.00"
-                          className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Category */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Category</label>
-                      <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      >
-                        <option value="">Select a category</option>
-                        {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                      </select>
-                    </div>
-
-                    {/* Date */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Date</label>
-                      <input
-                        type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      />
-                    </div>
-
-                    {/* Receipt */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Upload Receipt (Optional)</label>
-                      <div className="relative">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileUpload}
-                          className="hidden"
-                          id="receipt-upload"
-                        />
-                        <label
-                          htmlFor="receipt-upload"
-                          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-900 border-2 border-dashed border-slate-700 rounded-xl text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
-                        >
-                          <Upload size={20} />
-                          {formData.receipt ? formData.receipt.name : 'Choose file'}
-                        </label>
-                      </div>
-                      {receiptPreview && (
-                        <div className="mt-4">
-                          <img
-                            src={receiptPreview}
-                            alt="Receipt preview"
-                            className="w-full h-48 object-cover rounded-xl border border-slate-700"
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Modal Buttons */}
-                    <div className="flex gap-3 pt-4">
-                      <button
-                        onClick={() => { setShowAddModal(false); setReceiptPreview(null); }}
-                        className="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-semibold transition-colors"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleSubmit}
-                        className="flex-1 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold transition-colors shadow-lg"
-                      >
-                        Add Expense
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
           </div>
         </div>
-      </div>
     </>
   );
 }

@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
-import { Plus, Upload, X, IndianRupee, FileText, Search, Filter } from 'lucide-react';
+import { Plus, Upload, X, IndianRupee, FileText, Search, Filter, Trash2, Edit3 } from 'lucide-react';
 import UsersSidebar from './UsersSidebar';
 import Header from '../commoncomponents/Header';
 import axios from 'axios';
-import { nanoid } from 'nanoid'; 
+import { nanoid } from 'nanoid';
 
 interface Expense {
   id: string;
+  _id:string;
   description: string;
   amount: string;
   category: string;
@@ -23,9 +24,11 @@ interface FormData {
   receipt: File | null;
 }
 
-export default function ExpenseDashboard() {
+export default function AddExpenseDashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [_loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     description: '',
@@ -39,16 +42,15 @@ export default function ExpenseDashboard() {
   const userId = localStorage.getItem("userId");
   const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Healthcare', 'Other'];
 
-  // --- Fetch expenses from backend ---
+  // --- 1. Fetch expenses from backend ---
   useEffect(() => {
     const fetchExpenses = async () => {
       if (!userId) return;
       try {
         const response = await axios.get(`http://localhost:5000/api/expenses/${userId}`);
-        // Ensure each expense has a string id
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
-          id: exp.id?.toString() ?? nanoid()
+          id: exp._id?.toString() || exp.id?.toString() || nanoid()
         }));
         setExpenses(mappedExpenses);
       } catch (error) {
@@ -60,7 +62,7 @@ export default function ExpenseDashboard() {
     fetchExpenses();
   }, [userId]);
 
-  // --- Input handling ---
+  // --- 2. Input handling ---
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -79,10 +81,38 @@ export default function ExpenseDashboard() {
     }
   };
 
-  // --- Submit expense ---
+  // --- 3. Delete Logic ---
+  const handleDelete = async () => {
+  if (!deleteId) return;
+  try {
+    await axios.delete(`http://localhost:5000/api/expenses/${deleteId}`);
+    setExpenses(prev => prev.filter(exp => exp._id !== deleteId));
+    setDeleteId(null); // Close the modal
+  } catch (error) {
+    console.error("Delete failed:", error);
+    alert("Failed to delete transaction");
+    setDeleteId(null);
+  }
+};
+
+  // --- 4. Open Edit Modal ---
+  const handleEditClick = (expense: Expense) => {
+    setEditingId(expense.id);
+    setFormData({
+      description: expense.description,
+      amount: expense.amount,
+      category: expense.category,
+      date: expense.date.split('T')[0],
+      receipt: null
+    });
+    setReceiptPreview(expense.receiptUrl);
+    setShowAddModal(true);
+  };
+
+  // --- 5. Submit expense (Handles ADD and EDIT) ---
   const handleSubmit = async () => {
     if (!formData.description || !formData.amount || !formData.category || !userId) {
-      alert("Please fill all fields");
+      alert("Please fill all required fields");
       return;
     }
 
@@ -96,26 +126,39 @@ export default function ExpenseDashboard() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/expenses/add', payload);
-      if (response.data.success) {
-        const newExpense: Expense = {
-          id: response.data.data.id?.toString() ?? nanoid(),
-          ...response.data.data,
-        };
-        setExpenses(prev => [newExpense, ...prev]);
-
-        setFormData({
-          description: '',
-          amount: '',
-          category: '',
-          date: new Date().toISOString().split('T')[0],
-          receipt: null
-        });
-        setReceiptPreview(null);
-        setShowAddModal(false);
+      if (editingId) {
+        // UPDATE MODE
+        const response = await axios.patch(`http://localhost:5000/api/expenses/${editingId}`, payload);
+        if (response.data.success) {
+          setExpenses(prev => prev.map(exp => 
+            exp.id === editingId ? { ...response.data.data, id: editingId } : exp
+          ));
+        }
+      } else {
+        // ADD MODE
+        const response = await axios.post('http://localhost:5000/api/expenses/add', payload);
+        if (response.data.success) {
+          const newExpense: Expense = {
+            id: response.data.data._id || response.data.data.id,
+            ...response.data.data,
+          };
+          setExpenses(prev => [newExpense, ...prev]);
+        }
       }
+
+      // Cleanup
+      setShowAddModal(false);
+      setEditingId(null);
+      setFormData({
+        description: '',
+        amount: '',
+        category: '',
+        date: new Date().toISOString().split('T')[0],
+        receipt: null
+      });
+      setReceiptPreview(null);
     } catch (error) {
-      console.error("Error adding expense:", error);
+      console.error("Error saving expense:", error);
       alert("Failed to save transaction.");
     }
   };
@@ -127,15 +170,17 @@ export default function ExpenseDashboard() {
         <Header />
         <div className="min-h-screen bg-white">
           <div className="max-w-5xl p-6">
-
+            
             {/* Action Bar */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <button
-                onClick={() => setShowAddModal(true)}
-                className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  setEditingId(null);
+                  setShowAddModal(true);
+                }}
+                className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg"
               >
-                <Plus size={20} />
-                Add Expense
+                <Plus size={20} /> Add Expense
               </button>
 
               <div className="flex-1 flex gap-3">
@@ -144,10 +189,10 @@ export default function ExpenseDashboard() {
                   <input
                     type="text"
                     placeholder="Search expenses..."
-                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none"
                   />
                 </div>
-                <button className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:bg-slate-700 transition-colors">
+                <button className="px-4 py-3 bg-slate-800 rounded-xl text-white hover:bg-slate-700 transition-colors">
                   <Filter size={20} />
                 </button>
               </div>
@@ -155,55 +200,59 @@ export default function ExpenseDashboard() {
 
             {/* Expenses List */}
             <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-xl overflow-hidden">
-              {expenses.length === 0 ? (
+              {loading ? (
+                <div className="text-center py-16 text-gray-500">Loading expenses...</div>
+              ) : expenses.length === 0 ? (
                 <div className="text-center py-16 px-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FileText className="text-white" size={40} />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No expenses yet</h3>
+                  <FileText className="text-emerald-500 mx-auto mb-4" size={48} />
+                  <h3 className="text-xl font-semibold text-gray-700">No expenses yet</h3>
                   <p className="text-slate-500 mb-6">Start tracking by adding your first expense</p>
-                  <button
-                    onClick={() => setShowAddModal(true)}
-                    className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all"
-                  >
-                    <Plus size={20} />
-                    Add Your First Expense
-                  </button>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-700">
+                <div className="divide-y divide-gray-200">
                   {expenses.map((expense) => (
-                    <div key={expense.id} className="p-6 hover:bg-slate-750 transition-colors">
+                    <div key={expense.id} className="p-6 hover:bg-slate-50 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-gray-700">{expense.description}</h3>
-                            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium">
+                            <h3 className="text-lg font-semibold text-gray-800">{expense.description}</h3>
+                            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase">
                               {expense.category}
                             </span>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-white">
-                            <span className="flex items-center gap-1 text-white">
-                              {new Date(expense.date).toLocaleDateString()}
-                            </span>
-                            {expense.receiptUrl && (
-                              <span className="flex items-center gap-1 text-blue-400">
-                                <Upload size={16} />
-                                Receipt attached
-                              </span>
-                            )}
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span>{new Date(expense.date).toLocaleDateString()}</span>
+                            {expense.receiptUrl && <span className="text-blue-500 font-medium">Receipt Attached</span>}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-gray-700">Rs{parseFloat(expense.amount).toFixed(2)}</p>
+
+                        <div className="flex flex-col items-end gap-3">
+                          <p className="text-2xl font-bold text-gray-900">Rs {parseFloat(expense.amount).toFixed(2)}</p>
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => handleEditClick(expense)}
+                              className="p-2 cursor-pointer text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit"
+                            >
+                              <Edit3 size={18} />
+                            </button>
+                            <button 
+                           onClick={() => setDeleteId(expense._id)} 
+                           className="p-2 cursor-pointer text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete"
+                            >
+                            <Trash2 size={18} />
+                          </button>
+                          </div>
                         </div>
                       </div>
+                      
                       {expense.receiptUrl && (
                         <div className="mt-4">
                           <img
                             src={expense.receiptUrl}
                             alt="Receipt"
-                            className="h-32 rounded-lg border border-slate-700 object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                            className="h-24 w-24 rounded-lg border border-gray-200 object-cover"
                           />
                         </div>
                       )}
@@ -212,24 +261,54 @@ export default function ExpenseDashboard() {
                 </div>
               )}
             </div>
-
-            {/* Add Expense Modal */}
+{/* Delete Confirmation Modal */}
+{deleteId && (
+  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
+    <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 animate-in fade-in zoom-in duration-200">
+      <div className="flex flex-col items-center text-center">
+        <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4">
+          <Trash2 size={32} />
+        </div>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Transaction?</h2>
+        <p className="text-gray-500 mb-8">
+          Are you sure you want to delete this expense? This action cannot be undone.
+        </p>
+        
+        <div className="flex gap-3 w-full">
+          <button 
+            onClick={() => setDeleteId(null)}
+            className="flex-1 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={handleDelete}
+            className="flex-1 py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 shadow-lg shadow-red-200 transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+            {/* Add/Edit Modal */}
             {showAddModal && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+                <div className="bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
                   <div className="p-6 border-b border-slate-700 flex items-center justify-between sticky top-0 bg-slate-800 z-10">
-                    <h2 className="text-2xl font-bold text-white">Add New Expense</h2>
+                    <h2 className="text-2xl font-bold text-white">
+                      {editingId ? "Edit Expense" : "Add New Expense"}
+                    </h2>
                     <button
-                      onClick={() => { setShowAddModal(false); setReceiptPreview(null); }}
-                      className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                      onClick={() => { setShowAddModal(false); setEditingId(null); setReceiptPreview(null); }}
+                      className="p-2 hover:bg-slate-700 rounded-lg text-slate-400"
                     >
-                      <X className="text-slate-400" size={24} />
+                      <X size={24} />
                     </button>
                   </div>
 
                   <div className="p-6 space-y-5">
-                    {/* Form fields */}
-                    {/* Description */}
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
                       <input
@@ -238,42 +317,38 @@ export default function ExpenseDashboard() {
                         value={formData.description}
                         onChange={handleInputChange}
                         placeholder="e.g., Grocery shopping"
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-emerald-500"
                       />
                     </div>
 
-                    {/* Amount */}
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Amount</label>
                       <div className="relative">
-                        <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+                        <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
                           type="number"
                           name="amount"
                           value={formData.amount}
                           onChange={handleInputChange}
-                          step="0.01"
                           placeholder="0.00"
-                          className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-emerald-500"
                         />
                       </div>
                     </div>
 
-                    {/* Category */}
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Category</label>
                       <select
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-emerald-500"
                       >
-                        <option value="">Select a category</option>
+                        <option value="">Select Category</option>
                         {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                       </select>
                     </div>
 
-                    {/* Date */}
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">Date</label>
                       <input
@@ -281,60 +356,49 @@ export default function ExpenseDashboard() {
                         name="date"
                         value={formData.date}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-emerald-500"
                       />
                     </div>
 
-                    {/* Receipt */}
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Upload Receipt (Optional)</label>
-                      <div className="relative">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileUpload}
-                          className="hidden"
-                          id="receipt-upload"
-                        />
-                        <label
-                          htmlFor="receipt-upload"
-                          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-900 border-2 border-dashed border-slate-700 rounded-xl text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
-                        >
-                          <Upload size={20} />
-                          {formData.receipt ? formData.receipt.name : 'Choose file'}
-                        </label>
-                      </div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Receipt (Optional)</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        id="receipt-upload"
+                      />
+                      <label
+                        htmlFor="receipt-upload"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-900 border-2 border-dashed border-slate-700 rounded-xl text-slate-400 hover:border-emerald-500 cursor-pointer"
+                      >
+                        <Upload size={20} />
+                        {formData.receipt ? formData.receipt.name : 'Click to upload image'}
+                      </label>
                       {receiptPreview && (
-                        <div className="mt-4">
-                          <img
-                            src={receiptPreview}
-                            alt="Receipt preview"
-                            className="w-full h-48 object-cover rounded-xl border border-slate-700"
-                          />
-                        </div>
+                        <img src={receiptPreview} className="mt-4 w-full h-32 object-cover rounded-xl border border-slate-700" alt="Preview" />
                       )}
                     </div>
 
-                    {/* Modal Buttons */}
                     <div className="flex gap-3 pt-4">
                       <button
-                        onClick={() => { setShowAddModal(false); setReceiptPreview(null); }}
-                        className="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-semibold transition-colors"
+                        onClick={() => { setShowAddModal(false); setEditingId(null); setReceiptPreview(null); }}
+                        className="flex-1 px-6 py-3 bg-slate-700 text-white rounded-xl font-semibold hover:bg-slate-600"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={handleSubmit}
-                        className="flex-1 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold transition-colors shadow-lg"
+                        className="flex-1 px-6 py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 shadow-lg"
                       >
-                        Add Expense
+                        {editingId ? "Save Changes" : "Add Expense"}
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
             )}
-
           </div>
         </div>
       </div>
