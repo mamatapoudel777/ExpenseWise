@@ -9,10 +9,10 @@ import UserDashboard from "./components/userdashboard/UserDashboardLayout";
 import ExpenseDashboard from './components/userdashboard/Transaction'
 import AddExpenseDashboard from "./components/userdashboard/AddTransaction";
 import UsersList from "./components/admindashboard/UsersList";
+import Profile from "./components/userdashboard/Profile"
 import ProtectedRoute from "./components/ProtectedRoute"; 
 
 function App() {
-  // Store logged-in user info
   const [user, setUser] = useState<{ email: string; role: "admin" | "user" } | null>(null);
 
   // Dummy login check (you can replace with API call)
@@ -80,6 +80,14 @@ function App() {
           element={
             <ProtectedRoute user={user} requiredRole="user">
               <AddExpenseDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/profile"
+          element={
+            <ProtectedRoute user={user} requiredRole="user">
+              <Profile />
             </ProtectedRoute>
           }
         />

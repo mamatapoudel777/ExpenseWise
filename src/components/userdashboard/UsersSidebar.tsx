@@ -55,7 +55,7 @@ const UsersSidebar: React.FC = () => {
 <NavLink
   icon={<Users />}
   label="Profile Managements"
-  onClick={() => navigate('#')}
+  onClick={() => navigate('/user/profile')}
 />
           <NavLink icon={<FileText />} label="Export Report" />
           
