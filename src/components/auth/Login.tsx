@@ -16,7 +16,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
@@ -48,13 +48,9 @@ function Login() {
       }
 
       /*  NORMAL USER LOGIN */
-const response = await axios.post(
-  `${baseURL}/login`,
-  {
-    email,
-    password,
-  }
-);
+console.log(baseURL);
+const response = await axios.post(`${baseURL}/login`, { email, password });
+
       if (response.data.success) {
         localStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("userName", response.data.user.firstname);

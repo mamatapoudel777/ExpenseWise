@@ -24,6 +24,7 @@ interface FormData {
 }
 
 export default function ExpenseDashboard() {
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [_loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<FormData>({
@@ -42,7 +43,11 @@ export default function ExpenseDashboard() {
     const fetchExpenses = async () => {
       if (!userId) return;
       try {
-        const response = await axios.get(`http://localhost:5000/api/expenses/${userId}`);
+        console.log("BASE URL:", import.meta.env.VITE_API_BASE_URL);
+        console.log("BASE URL:", baseURL);
+const response = await axios.get(
+  `${baseURL}/api/expenses/${userId}`
+);
         // Ensure each expense has a string id AXIOS INTERCEPTOR ACCESS TOKEN REFRESH JWT 
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
