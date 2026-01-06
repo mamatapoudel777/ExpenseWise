@@ -43,7 +43,7 @@ export default function ExpenseDashboard() {
       if (!userId) return;
       try {
         const response = await axios.get(`http://localhost:5000/api/expenses/${userId}`);
-        // Ensure each expense has a string id
+        // Ensure each expense has a string id AXIOS INTERCEPTOR ACCESS TOKEN REFRESH JWT 
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
           id: exp.id?.toString() ?? nanoid()

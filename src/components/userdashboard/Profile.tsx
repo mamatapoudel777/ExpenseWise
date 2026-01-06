@@ -48,7 +48,7 @@ export default function Profile() {
     confirmPassword: ''
   });
 
-  // ✅ FETCH LOGGED-IN USER (OPTION 2)
+  // FETCH LOGGED-IN USER (OPTION 2)
   const fetchUser = async () => {
     try {
       const userId = localStorage.getItem('userId');
@@ -59,7 +59,7 @@ export default function Profile() {
       setUser(res.data);
       console.log('API response:', res.data);
 
-      // ✅ Prefill form
+      // Prefill form
       setFormData(prev => ({
         ...prev,
         firstname: res.data.firstname,
@@ -145,7 +145,7 @@ export default function Profile() {
                   <div className="bg-emerald-100 p-4 rounded-xl text-center">
                     <TrendingUp className="mx-auto text-emerald-600" />
                     <div className="font-bold">
-                      ₨{(Number(formData.monthlyIncome) / 1000 || 0).toFixed(0)}k
+                     RS {(Number(formData.monthlyIncome) / 1000 || 0).toFixed(0)}k
                     </div>
                     <div className="text-xs">Income</div>
                   </div>

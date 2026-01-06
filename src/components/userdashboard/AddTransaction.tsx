@@ -4,7 +4,6 @@ import { Plus, Upload, X, IndianRupee, FileText, Search, Filter, Trash2, Edit3 }
 import UsersSidebar from './UsersSidebar';
 import Header from '../commoncomponents/Header';
 import axios from 'axios';
-import { nanoid } from 'nanoid';
 
 interface Expense {
   id: string;
@@ -50,7 +49,7 @@ export default function AddExpenseDashboard() {
         const response = await axios.get(`http://localhost:5000/api/expenses/${userId}`);
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
-          id: exp._id?.toString() || exp.id?.toString() || nanoid()
+          id: exp._id?.toString() || exp.id?.toString()
         }));
         setExpenses(mappedExpenses);
       } catch (error) {

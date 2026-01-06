@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { CheckCircle, Eye, EyeOff } from "lucide-react";
+
 import image1 from "../../assets/images (1).png";
 import image2 from "../../assets/images.jpeg";
 import image3 from "../../assets/images.png";
@@ -15,6 +16,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
@@ -46,11 +48,13 @@ function Login() {
       }
 
       /*  NORMAL USER LOGIN */
-      const response = await axios.post("http://localhost:5000/login", {
-        email,
-        password,
-      });
-
+const response = await axios.post(
+  `${baseURL}/login`,
+  {
+    email,
+    password,
+  }
+);
       if (response.data.success) {
         localStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("userName", response.data.user.firstname);
