@@ -43,12 +43,11 @@ export default function ExpenseDashboard() {
     const fetchExpenses = async () => {
       if (!userId) return;
       try {
-        console.log("BASE URL:", import.meta.env.VITE_API_BASE_URL);
         console.log("BASE URL:", baseURL);
 const response = await axios.get(
   `${baseURL}/api/expenses/${userId}`
 );
-        // Ensure each expense has a string id AXIOS INTERCEPTOR ACCESS TOKEN REFRESH JWT 
+        // Ensure each expense has a string id 
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
           id: exp.id?.toString() ?? nanoid()
@@ -99,7 +98,7 @@ const response = await axios.get(
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/expenses/add', payload);
+      const response = await axios.post(`${baseURL}/api/expenses/add`, payload);
       if (response.data.success) {
         const newExpense: Expense = {
           id: response.data.data.id?.toString() ?? nanoid(),

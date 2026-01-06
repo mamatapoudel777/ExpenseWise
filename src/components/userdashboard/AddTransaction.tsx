@@ -24,6 +24,7 @@ interface FormData {
 }
 
 export default function AddExpenseDashboard() {
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -46,7 +47,7 @@ export default function AddExpenseDashboard() {
     const fetchExpenses = async () => {
       if (!userId) return;
       try {
-        const response = await axios.get(`http://localhost:5000/api/expenses/${userId}`);
+        const response = await axios.get(`${baseURL}/api/expenses/${userId}`);
         const mappedExpenses = response.data.map((exp: any) => ({
           ...exp,
           id: exp._id?.toString() || exp.id?.toString()
@@ -84,7 +85,7 @@ export default function AddExpenseDashboard() {
   const handleDelete = async () => {
   if (!deleteId) return;
   try {
-    await axios.delete(`http://localhost:5000/api/expenses/${deleteId}`);
+    await axios.delete(`${baseURL}/api/expenses/${deleteId}`);
     setExpenses(prev => prev.filter(exp => exp._id !== deleteId));
     setDeleteId(null); // Close the modal
   } catch (error) {
@@ -127,7 +128,7 @@ export default function AddExpenseDashboard() {
     try {
       if (editingId) {
         // UPDATE MODE
-        const response = await axios.patch(`http://localhost:5000/api/expenses/${editingId}`, payload);
+        const response = await axios.patch(`${baseURL}/api/expenses/${editingId}`, payload);
         if (response.data.success) {
           setExpenses(prev => prev.map(exp => 
             exp.id === editingId ? { ...response.data.data, id: editingId } : exp
@@ -135,7 +136,7 @@ export default function AddExpenseDashboard() {
         }
       } else {
         // ADD MODE
-        const response = await axios.post('http://localhost:5000/api/expenses/add', payload);
+        const response = await axios.post(`${baseURL}/api/expenses/add`, payload);
         if (response.data.success) {
           const newExpense: Expense = {
             id: response.data.data._id || response.data.data.id,

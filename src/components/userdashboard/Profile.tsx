@@ -17,6 +17,7 @@ interface UserData {
 }
 
 export default function Profile() {
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
   const [activeTab, setActiveTab] = useState('personal');
   const [user, setUser] = useState<UserData | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +55,7 @@ export default function Profile() {
       const userId = localStorage.getItem('userId');
       if (!userId) return;
 
-      const res = await axios.get(`http://localhost:5000/users/${userId}`);
+      const res = await axios.get(`${baseURL}/users/${userId}`);
 
       setUser(res.data);
       console.log('API response:', res.data);
