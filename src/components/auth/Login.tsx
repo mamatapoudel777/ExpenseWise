@@ -52,9 +52,11 @@ console.log(baseURL);
 const response = await axios.post(`${baseURL}/login`, { email, password });
 
       if (response.data.success) {
+        console.log("Success! Navigating to dashboard...");
         localStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("userName", response.data.user.firstname);
         localStorage.setItem("role", "user");
+        console.log("Login response:", response.data);
 
         if (rememberMe) {
           localStorage.setItem("rememberedEmail", email);

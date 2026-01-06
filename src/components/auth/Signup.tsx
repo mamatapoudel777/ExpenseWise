@@ -13,6 +13,7 @@ function SignUp() {
   // Message state for success/error feedback
   const [message, setMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
+      const response = await axios.post(`${baseURL}/signup`, {
         firstname,
         lastname,
         email,
