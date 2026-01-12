@@ -45,7 +45,7 @@ export default function ExpenseDashboard() {
       try {
         console.log("BASE URL:", baseURL);
 const response = await axios.get(
-  `${baseURL}/api/expenses/${userId}`
+  `${baseURL}/expenses/${userId}`
 );
         // Ensure each expense has a string id 
         const mappedExpenses = response.data.map((exp: any) => ({
@@ -98,7 +98,7 @@ const response = await axios.get(
     };
 
     try {
-      const response = await axios.post(`${baseURL}/api/expenses/add`, payload);
+      const response = await axios.post(`${baseURL}/expenses/add`, payload);
       if (response.data.success) {
         const newExpense: Expense = {
           id: response.data.data.id?.toString() ?? nanoid(),

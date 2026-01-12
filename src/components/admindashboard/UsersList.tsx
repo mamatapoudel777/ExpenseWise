@@ -18,11 +18,11 @@ const UsersList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/users');
+      const res = await axios.get(`${baseURL}/users`);
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users", error);
@@ -41,7 +41,7 @@ const UsersList: React.FC = () => {
   const confirmDelete = async () => {
     if (selectedUser) {
       try {
-        await axios.delete(`http://localhost:5000/users/${selectedUser._id}`);
+        await axios.delete(`${baseURL}/users/${selectedUser._id}`);
         setUsers(users.filter(u => u._id !== selectedUser._id));
         setIsModalOpen(false);
         setSelectedUser(null);
@@ -64,7 +64,7 @@ const UsersList: React.FC = () => {
 
     try {
       const res = await axios.patch(
-        `http://localhost:5000/users/${selectedUser._id}`,
+        `${baseURL}/users/${selectedUser._id}`,
         updatedData
       );
 

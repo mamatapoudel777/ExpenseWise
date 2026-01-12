@@ -49,7 +49,7 @@ function Login() {
 
       /*  NORMAL USER LOGIN */
 console.log(baseURL);
-const response = await axios.post(`${baseURL}/login`, { email, password });
+const response = await axios.post(`${baseURL}/users/login`, { email, password });
 
       if (response.data.success) {
         console.log("Success! Navigating to dashboard...");

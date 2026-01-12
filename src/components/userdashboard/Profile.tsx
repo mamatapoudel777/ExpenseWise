@@ -17,7 +17,7 @@ interface UserData {
 }
 
 export default function Profile() {
-  const baseURL = `${import.meta.env.VITE_API_BASE_URL}`;
+const baseURL = import.meta.env.VITE_API_BASE_URL;
   const [activeTab, setActiveTab] = useState('personal');
   const [user, setUser] = useState<UserData | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -62,13 +62,32 @@ export default function Profile() {
 
       // Prefill form
       setFormData(prev => ({
-        ...prev,
-        firstname: res.data.firstname,
-        lastname: res.data.lastname,
-        email: res.data.email,
-      }));
+  ...prev,
+  firstname: res.data.firstname || '',
+  lastname: res.data.lastname || '',
+  email: res.data.email || '',
+  phoneNumber: res.data.phoneNumber || '',
+  dateOfBirth: res.data.dateOfBirth
+    ? res.data.dateOfBirth.split('T')[0]
+    : '',
+  address: res.data.address || '',
+  occupation: res.data.occupation || '',
+  profilePic: res.data.profilePic || '',
+
+  monthlyIncome: res.data.monthlyIncome || '',
+  savingsTarget: res.data.savingsTarget || '',
+  savingReason: res.data.savingReason || '',
+  currency: res.data.currency || '',
+  bankName: res.data.bankName || '',
+  accountNumber: res.data.accountNumber || '',
+
+  emailNotifications: res.data.emailNotifications ?? true,
+  smsNotifications: res.data.smsNotifications ?? false,
+  budgetAlerts: res.data.budgetAlerts ?? true,
+  weeklyReports: res.data.weeklyReports ?? true,
+}));
     } catch (error) {
-      console.error('Error fetching user', error);
+      console.error('Error fetching user:', error);
     }
   };
 
@@ -86,9 +105,45 @@ export default function Profile() {
     reader.readAsDataURL(file);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+  try {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return alert('User not logged in');
+
+    // Only send fields that belong to User schema
+    const payload = {
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      dateOfBirth: formData.dateOfBirth,
+      address: formData.address,
+      occupation: formData.occupation,
+      profilePic: formData.profilePic,
+
+      monthlyIncome: formData.monthlyIncome,
+      savingsTarget: formData.savingsTarget,
+      savingReason: formData.savingReason,
+      currency: formData.currency,
+      bankName: formData.bankName,
+      accountNumber: formData.accountNumber,
+
+      emailNotifications: formData.emailNotifications,
+      smsNotifications: formData.smsNotifications,
+      budgetAlerts: formData.budgetAlerts,
+      weeklyReports: formData.weeklyReports,
+    };
+
+    await axios.patch(`${baseURL}/users/${userId}`, payload);
+
     alert('Profile updated successfully!');
-  };
+    fetchUser(); // refresh data from DB
+  } catch (error) {
+    console.error('Update failed', error);
+    alert('Failed to update profile');
+  }
+};
+
 
   const savingsPercentage =
     formData.monthlyIncome && formData.savingsTarget
