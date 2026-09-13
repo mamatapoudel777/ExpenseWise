@@ -10,6 +10,7 @@ import ExpenseDashboard from './components/userdashboard/Transaction'
 import AddExpenseDashboard from "./components/userdashboard/AddTransaction";
 import UsersList from "./components/admindashboard/UsersList";
 import Profile from "./components/userdashboard/Profile"
+import ExportReport from "./components/userdashboard/ExportReport";
 import ProtectedRoute from "./components/ProtectedRoute"; 
 
 function App() {
@@ -80,6 +81,14 @@ function App() {
           element={
             <ProtectedRoute user={user} requiredRole="user">
               <AddExpenseDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/export"
+          element={
+            <ProtectedRoute user={user} requiredRole="user">
+              <ExportReport />
             </ProtectedRoute>
           }
         />

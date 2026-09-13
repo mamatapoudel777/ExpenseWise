@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard,Users, FileText, LogOut, List, PlusCircle } from 'lucide-react';
-import LogoutModal from '../auth/Logout'
+import { useNavigate, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Users, FileText, LogOut, List, PlusCircle } from 'lucide-react';
+import LogoutModal from '../auth/Logout';
 
 interface NavLinkProps {
   icon: React.ReactNode;
@@ -14,7 +14,7 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, isActive, onClick }) => 
   <button 
     onClick={onClick}
     className={`w-full flex items-center p-2 rounded-lg transition-colors text-sm font-medium ${
-      isActive ? 'bg-blue-100 text-blue-600' : 'text-gray-100 bg-[#005a40] hover:bg-[#004d37]'
+      isActive ? 'bg-white text-[#00694B] font-bold shadow-sm' : 'text-gray-100 bg-[#005a40] hover:bg-[#004d37]'
     }`}
   >
     {React.cloneElement(icon as React.ReactElement, { className: 'w-5 h-5 mr-3' })}
@@ -24,6 +24,7 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, isActive, onClick }) => 
 
 const UsersSidebar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const confirmLogout = () => {
@@ -40,24 +41,42 @@ const UsersSidebar: React.FC = () => {
 
         <nav className="flex-1 px-4 space-y-4">
           <h3 className="text-xs font-semibold uppercase text-gray-300 px-2">Menu</h3>
-          <NavLink icon={<LayoutDashboard />} label="Dashboard" onClick={() => navigate('#')} />
+          
+          {/* Dashboard link fixed here */}
+          <NavLink 
+            icon={<LayoutDashboard />} 
+            label="Dashboard" 
+            isActive={location.pathname === '/user/dashboard'}
+            onClick={() => navigate('/user/dashboard')} 
+          />
+
           <NavLink
             icon={<List />}
             label="Transaction"
+            isActive={location.pathname === '/user/transaction'}
             onClick={() => navigate('/user/transaction')}
           />
+
           <NavLink
             icon={<PlusCircle />}
             label="Add Transaction"
+            isActive={location.pathname === '/user/addtransaction'}
             onClick={() => navigate('/user/addtransaction')}
           />
 
-<NavLink
-  icon={<Users />}
-  label="Profile Managements"
-  onClick={() => navigate('/user/profile')}
-/>
-          <NavLink icon={<FileText />} label="Export Report" />
+          <NavLink
+            icon={<Users />}
+            label="Profile Managements"
+            isActive={location.pathname === '/user/profile'}
+            onClick={() => navigate('/user/profile')}
+          />
+
+          <NavLink 
+            icon={<FileText />} 
+            label="Export Report" 
+            isActive={location.pathname === '/user/export'}
+            onClick={() => navigate('/user/export')}
+          />
           
           <NavLink 
             icon={<LogOut />} 
